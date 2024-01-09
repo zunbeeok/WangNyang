@@ -1,0 +1,9 @@
+package com.sparta.wangnyang.domain.board.dto
+
+data class BoardResponse(
+    val id : Long,
+    val title : String,
+    val mainText : String,
+    val writer : String,
+    val createdAt : String,
+)
