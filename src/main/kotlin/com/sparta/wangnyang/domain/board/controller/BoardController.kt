@@ -3,7 +3,10 @@ package com.sparta.wangnyang.domain.board.controller
 import com.sparta.wangnyang.domain.board.dto.BoardResponse
 import com.sparta.wangnyang.domain.board.dto.CreateBoardRequest
 import com.sparta.wangnyang.domain.board.dto.UpdateBoardRequest
+import com.sparta.wangnyang.domain.board.repository.BoardRepository
 import com.sparta.wangnyang.domain.board.service.BoardService
+import com.sparta.wangnyang.entity.Board
+import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.awt.print.Pageable
 
 
 @RequestMapping("/board")
@@ -21,12 +25,25 @@ import org.springframework.web.bind.annotation.RestController
 class BoardController(
 private val boardService: BoardService
 ) {
+//    @GetMapping()
+//    fun getBoardList(): ResponseEntity<List<BoardResponse>> {
+//        return ResponseEntity
+//            .status(HttpStatus.OK)
+//            .body(boardService.getAllBoardList())
+//    }
+
     @GetMapping()
-    fun getBoardList(): ResponseEntity<List<BoardResponse>> {
+    fun getBoardList(): ResponseEntity <List<BoardResponse>> {
         return ResponseEntity
-            .status(HttpStatus.OK)
-            .body(boardService.getAllBoardList())
+                .status(HttpStatus.OK)
+                .body(boardService.getAllBoardList())
     }
+
+//    @GetMapping
+//    fun getBoardList(pageable: Pageable): Page<Board>{
+//        return boardRepository.findAll(pageable)
+//
+//    }
 
     @GetMapping("/{boardId}")
     fun getBoard(@PathVariable boardId: Long): ResponseEntity<BoardResponse>

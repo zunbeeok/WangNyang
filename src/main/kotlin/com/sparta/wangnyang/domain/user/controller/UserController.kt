@@ -33,7 +33,7 @@ class UserController(
     fun logIn(@RequestBody loginRequest: LoginRequest): ResponseEntity<UserResponse> {
         return ResponseEntity
             .status((HttpStatus.OK))
-            .body(userService.logIn(loginRequest.loginId, loginRequest.pw))
+            .body(userService.logIn(loginRequest))
     }
 
 

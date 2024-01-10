@@ -9,6 +9,7 @@ import com.sparta.wangnyang.entity.toResponse
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.awt.print.Pageable
 
 
 @Service
@@ -20,6 +21,7 @@ class BoardServiceImpl (
     override fun getAllBoardList(): List<BoardResponse> {
         return boardRepository.findAll().map { it.toResponse() }
     }
+
 
     override fun getBoardById(boardId: Long): BoardResponse {
         val board = boardRepository.findByIdOrNull(boardId) ?: throw Exception("게시물이 존재하지 않습니다.")
