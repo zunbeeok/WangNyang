@@ -29,7 +29,6 @@ data class User(
 
     }
 
-
 fun User.toResponse(): UserResponse {
     return UserResponse(
         id = id!!,
@@ -37,4 +36,7 @@ fun User.toResponse(): UserResponse {
         name = name,
         hp = hp,
     )
+
+
+
 }
