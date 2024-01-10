@@ -6,9 +6,11 @@ import com.sparta.wangnyang.domain.board.dto.UpdateBoardRequest
 import com.sparta.wangnyang.domain.board.repository.BoardRepository
 import com.sparta.wangnyang.domain.board.service.BoardService
 import com.sparta.wangnyang.entity.Board
+import com.sparta.wangnyang.entity.User
 import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -53,8 +55,9 @@ private val boardService: BoardService
 
     }
 
+
     @PostMapping
-    fun createBoard(@RequestBody createBoardRequest: CreateBoardRequest): ResponseEntity<BoardResponse>
+    fun createBoard(@AuthenticationPrincipal user: User,@RequestBody createBoardRequest: CreateBoardRequest): ResponseEntity<BoardResponse>
     {
         return ResponseEntity
             .status(HttpStatus.OK)

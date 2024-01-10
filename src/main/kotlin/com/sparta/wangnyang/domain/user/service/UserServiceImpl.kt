@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -83,7 +84,6 @@ private val jwtTokenProvider:JwtTokenProvider):UserService{
 
 
 
-
     @Transactional
     override fun logIn(loginRequest: LoginRequest): TokenInfo{
 
@@ -105,16 +105,17 @@ private val jwtTokenProvider:JwtTokenProvider):UserService{
     // 회원 가입
     @Transactional
     override fun signUp(request: SignUpRequest): UserResponse {
-        val user: User? = userRepository.findByLoginId(request.loginId)
+//        val user: User? = userRepository.findByLoginId(request.loginId)
 
+        val checkUser = userRepository.existsUserByLoginId(request.loginId)
         // 비어있지 않고 아이디가 조회되면 생성 불가
-        if (user != null) {
+        if (checkUser) {
             throw Exception("이미 존재하는 아이디입니다.")
         }
 
         return userRepository.save(
             User (
-                logInId = request.loginId,
+                loginId = request.loginId,
                 name = request.name,
                 pw = request.pw,
                 hp = request.hp,

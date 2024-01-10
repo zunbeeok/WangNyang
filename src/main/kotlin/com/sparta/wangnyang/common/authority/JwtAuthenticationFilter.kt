@@ -5,9 +5,11 @@ import jakarta.servlet.ServletRequest
 import jakarta.servlet.ServletResponse
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.stereotype.Component
 import org.springframework.util.StringUtils
 import org.springframework.web.filter.GenericFilterBean
 
+@Component
 class JwtAuthenticationFilter (
         private val jwtTokenProvider: JwtTokenProvider
 ):GenericFilterBean(){ //genericFilterBean
@@ -33,4 +35,6 @@ class JwtAuthenticationFilter (
             null;
         }
     }
+
+
 }

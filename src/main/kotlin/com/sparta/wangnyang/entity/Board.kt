@@ -16,7 +16,7 @@ import jakarta.persistence.Table
 
 
 @Entity
-@Table(name = "board")
+@Table(name = "board" , schema = "public")
 data class Board(
 //  @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = [CascadeType.ALL], orphanRemoval = true)
     @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL], orphanRemoval = true)
@@ -28,7 +28,7 @@ data class Board(
     @Column(name = "mainText")
     var mainText:String,
 
-    @Column(name = "userId")
+    @Column(name = "user_id")
     var userId:String
 
 ):BaseTimeEntity(){

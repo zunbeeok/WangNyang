@@ -4,7 +4,7 @@ import com.sparta.wangnyang.common.BaseTimeEntity
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "comment")
+@Table(name = "comment" , schema = "public")
 data class Comment(
     @Column
     var text: String,

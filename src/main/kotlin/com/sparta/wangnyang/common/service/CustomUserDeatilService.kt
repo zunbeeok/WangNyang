@@ -18,10 +18,10 @@ class CustomUserDetailService (
 ):UserDetailsService{
     override fun loadUserByUsername(loginId: String): UserDetails {
         return userRepository.findByLoginId(loginId)
-                ?.let { createUserDeatils(it) }?:throw UsernameNotFoundException("해당 유저는 없습니다.")
+                ?.let { createUserDetails(it) }?:throw UsernameNotFoundException("해당 유저는 없습니다.")
     }
 
-    private fun createUserDeatils(user:com.sparta.wangnyang.entity.User):UserDetails {
+    private fun createUserDetails(user:com.sparta.wangnyang.entity.User):UserDetails {
         return User(
                 user.name,
                 passwordEncoder.encode(user.pw),
