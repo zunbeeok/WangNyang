@@ -1,5 +1,6 @@
 package com.sparta.wangnyang.domain.user.controller
 
+import com.sparta.wangnyang.common.authority.TokenInfo
 import com.sparta.wangnyang.domain.user.dto.LoginRequest
 import com.sparta.wangnyang.domain.user.dto.SignUpRequest
 import com.sparta.wangnyang.domain.user.dto.UserResponse
@@ -30,7 +31,7 @@ class UserController(
     // 세션을 받아서
     // 로그인
     @PostMapping("/login")
-    fun logIn(@RequestBody loginRequest: LoginRequest): ResponseEntity<UserResponse> {
+    fun logIn(@RequestBody loginRequest: LoginRequest): ResponseEntity<TokenInfo> {
         return ResponseEntity
             .status((HttpStatus.OK))
             .body(userService.logIn(loginRequest))
