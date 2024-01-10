@@ -1,18 +1,42 @@
 package com.sparta.wangnyang.entity
 
 import com.sparta.wangnyang.common.BaseTimeEntity
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import com.sparta.wangnyang.domain.user.dto.UserResponse
+import jakarta.persistence.*
 
 
 @Entity
+@Table(name = "user")
 data class User(
-        var pw:String,
-        var name:String,
-        var hp:String,
-):BaseTimeEntity(){
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id :String?=null;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long? = null,
+
+    @Column(name = "loginId", length = 30)
+    val logInId: String,
+
+    @Column(name = "pw", length = 100)
+    val pw: String,
+
+    @Column(name = "name", length = 10)
+    val name: String,
+
+    @Column(name = "hp", length = 20)
+    val hp: String,
+
+    ) : BaseTimeEntity() {
+
+    }
+
+fun User.toResponse(): UserResponse {
+    return UserResponse(
+        id = id!!,
+        loginId = logInId,
+        name = name,
+        hp = hp,
+    )
+
+
+
 }

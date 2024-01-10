@@ -1,0 +1,18 @@
+package com.sparta.wangnyang.domain.user.service
+
+import com.sparta.wangnyang.domain.user.dto.SignUpRequest
+import com.sparta.wangnyang.domain.user.dto.UserResponse
+import jakarta.servlet.http.HttpServletResponse
+
+interface UserService {
+
+    fun logIn(loginId: String, pw: String, response: HttpServletResponse): UserResponse
+
+    fun signUp(request: SignUpRequest): UserResponse
+
+    fun getUserInfo(loginId: String): UserResponse
+
+//    fun updateUserInfo(loginId: String, request: UpdateUserRequest): UserResponse
+//
+//    fun deleteUserInfo(loginId: String)
+}
