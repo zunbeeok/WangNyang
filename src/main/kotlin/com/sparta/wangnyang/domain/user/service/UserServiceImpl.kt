@@ -85,8 +85,8 @@ class UserServiceImpl(
 //        val response = createSession(pw, response)
         val cookie: Cookie = Cookie(sessionStore.sess)
 
-        response.addCookie(cookie)
-        createSession(pw, response)
+//        response.addCookie(cookie)
+//        createSession(pw, response)
 
 
 
