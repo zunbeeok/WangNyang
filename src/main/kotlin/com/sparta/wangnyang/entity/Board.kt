@@ -18,7 +18,7 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "board")
 data class Board(
-//    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = [CascadeType.ALL], orphanRemoval = true)
+//  @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = [CascadeType.ALL], orphanRemoval = true)
     @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL], orphanRemoval = true)
     var comments: MutableList<Comment> = mutableListOf(),
 
@@ -43,6 +43,7 @@ fun Board.toResponse(): BoardResponse {
         title = title,
         mainText = mainText,
         writer = userId,
-        createdAt = createdAt.toString()
+        createdAt = createdAt.toString(),
+        comments = comments
     )
 }

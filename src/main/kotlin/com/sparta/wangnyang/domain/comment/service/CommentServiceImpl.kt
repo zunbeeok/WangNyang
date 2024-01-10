@@ -35,14 +35,14 @@ class CommentServiceImpl(
 
     }
     // 새로운 댓글을 생성하고 저장한 뒤, 해당 댓글의 정보를 CommentResponse로 변환해서 반환한다.
-    // bordId를 이용해 데이터베이스에서 해당 게시물을 찾아온다.
+    // boardId를 이용해 데이터베이스에서 해당 게시물을 찾아온다.
     // Comment 객체를 생성하고, commentRepository.save(comment)를 통해 데이터베이스에 저장한다.
     // 저장된 댓글을 CommentResponse.fromEntity(result)를 통해 CommentResponse객체로 변환해서 반환한다.
 
 
     @Transactional
-    override fun updateComment(boardId: Long, updateCommentRequest: UpdateCommentRequest): CommentResponse {
-        val foundComment = boardId.let {
+    override fun updateComment(commentId: Long, updateCommentRequest: UpdateCommentRequest): CommentResponse {
+        val foundComment = commentId.let {
             commentRepository.findByIdOrNull(it)
         } ?: throw Exception ("target comment is not found")
 
