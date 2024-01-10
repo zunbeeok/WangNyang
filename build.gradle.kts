@@ -25,6 +25,17 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    noArg {
+        annotation("jakarta.persistence.Entity")
+        annotation("jakarta.persistence.MappedSuperclass")
+        annotation("jakarta.persistence.Embeddable")
+    }
+
+    allOpen {
+        annotation("jakarta.persistence.Entity")
+        annotation("jakarta.persistence.MappedSuperclass")
+        annotation("jakarta.persistence.Embeddable")
+    }
 }
 
 tasks.withType<KotlinCompile> {
