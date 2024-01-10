@@ -1,12 +1,15 @@
 package com.sparta.wangnyang.domain.user.service
 
+import com.sparta.wangnyang.common.authority.TokenInfo
+import com.sparta.wangnyang.domain.user.dto.LoginRequest
 import com.sparta.wangnyang.domain.user.dto.SignUpRequest
 import com.sparta.wangnyang.domain.user.dto.UserResponse
 import jakarta.servlet.http.HttpServletResponse
 
 interface UserService {
 
-    fun logIn(loginId: String, pw: String, response: HttpServletResponse): UserResponse
+    fun logIn(loginRequest: LoginRequest): TokenInfo
+//    fun logIn(loginId: String, pw: String, response: HttpServletResponse): UserResponse
 
     fun signUp(request: SignUpRequest): UserResponse
 
