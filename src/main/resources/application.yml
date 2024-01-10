@@ -1,5 +1,5 @@
 spring:
   datasource:
-    url: db.xcucyuiyndjhmklriscs.supabase.co
+    url: jdbc:postgresql://db.xcucyuiyndjhmklriscs.supabase.co:5432/postgres
     username: postgres
     password: lgmAckE3uMWQdw63

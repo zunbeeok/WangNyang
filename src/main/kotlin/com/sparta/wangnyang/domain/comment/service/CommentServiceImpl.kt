@@ -1,5 +1,6 @@
 package com.sparta.wangnyang.domain.comment.service
 
+import com.sparta.wangnyang.domain.board.repository.BoardRepository
 import com.sparta.wangnyang.domain.comment.dto.CommentResponse
 import com.sparta.wangnyang.domain.comment.dto.CreateCommentRequest
 import com.sparta.wangnyang.domain.comment.dto.UpdateCommentRequest
@@ -11,7 +12,8 @@ import org.springframework.stereotype.Service
 
 @Service // 이 클래스는 Spring에서 서비스 역할을 한다고 붙여주는 어노테이션
 class CommentServiceImpl(
-    private val commentRepository: CommentRepository
+    private val commentRepository: CommentRepository,
+    private val boardRepository: BoardRepository
 ): CommentService {
     override fun getComment(): List<CommentResponse> {
         return commentRepository.findAll().map {CommentResponse.fromEntity(it)}
@@ -25,7 +27,7 @@ class CommentServiceImpl(
             ?: throw NoSuchElementException("존재하지 않는 게시물입니다.")
         val comment = Comment(
             text = createCommentRequest.text,
-            writer = createCommentRequest.writer,
+            userId = createCommentRequest.writer,
             board = board,
         )
         val result = commentRepository.save(comment)
@@ -44,7 +46,7 @@ class CommentServiceImpl(
             commentRepository.findByIdOrNull(it)
         } ?: throw Exception ("target comment is not found")
 
-        foundComment.writer = updateCommentRequest.writer
+        foundComment.userId = updateCommentRequest.writer
         foundComment.text = updateCommentRequest.text
 
         val result = commentRepository.save(foundComment)

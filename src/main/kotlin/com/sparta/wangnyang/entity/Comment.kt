@@ -10,9 +10,10 @@ data class Comment(
     var text: String,
 
     @Column
-    var writer: String,
+    var userId: String,
 
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     val board: Board,
 

@@ -14,7 +14,7 @@ data class CommentResponse(
     companion object {
         fun fromEntity(entity: Comment) = CommentResponse(
             id = entity.id,
-            writer = entity.writer,
+            writer = entity.userId,
             text = entity.text,
             createdAt = entity.createdAt,
             boardId = entity.board

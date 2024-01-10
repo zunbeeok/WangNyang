@@ -28,7 +28,7 @@ private val boardService: BoardService
             .body(boardService.getAllBoardList())
     }
 
-    @GetMapping("/board/{boardId}")
+    @GetMapping("/{boardId}")
     fun getBoard(@PathVariable boardId: Long): ResponseEntity<BoardResponse>
     {return ResponseEntity
         .status(HttpStatus.OK)
@@ -44,7 +44,7 @@ private val boardService: BoardService
             .body(boardService.createBoard(createBoardRequest))
     }
 
-    @PutMapping("board/{boardId}")
+    @PutMapping("/{boardId}")
     fun updateBoard(@PathVariable boardId: Long,
                     @RequestBody updateBoardRequest: UpdateBoardRequest
     )
@@ -54,7 +54,7 @@ private val boardService: BoardService
             .body(boardService.updateBoard(boardId,updateBoardRequest))
     }
 
-    @DeleteMapping("/board{boardId}")
+    @DeleteMapping("/{boardId}")
     fun deleteBoard(@PathVariable boardId: Long):ResponseEntity<Unit>
     {boardService.deleteBoard(boardId)
 
