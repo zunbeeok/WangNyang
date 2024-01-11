@@ -9,7 +9,6 @@ import com.sparta.wangnyang.entity.toResponse
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.awt.print.Pageable
 
 
 @Service
@@ -63,6 +62,7 @@ class BoardServiceImpl (
         val board = boardRepository.findByIdOrNull(boardId) ?: throw Exception("게시물이 존재하지 않습니다.")
         boardRepository.delete(board)
     }
+
 
 }
 

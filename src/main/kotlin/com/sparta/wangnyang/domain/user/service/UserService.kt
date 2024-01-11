@@ -4,7 +4,6 @@ import com.sparta.wangnyang.common.authority.TokenInfo
 import com.sparta.wangnyang.domain.user.dto.LoginRequest
 import com.sparta.wangnyang.domain.user.dto.SignUpRequest
 import com.sparta.wangnyang.domain.user.dto.UserResponse
-import jakarta.servlet.http.HttpServletResponse
 
 interface UserService {
 

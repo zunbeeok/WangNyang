@@ -114,7 +114,7 @@ private val jwtTokenProvider:JwtTokenProvider):UserService{
 
         return userRepository.save(
             User (
-                logInId = request.loginId,
+                loginId = request.loginId,
                 name = request.name,
                 pw = request.pw,
                 hp = request.hp,

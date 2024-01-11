@@ -14,7 +14,7 @@ data class User(
     var id: Long? = null,
 
     @Column(name = "loginId", length = 30)
-    val logInId: String,
+    val loginId: String,
 
     @Column(name = "pw", length = 100)
     val pw: String,
@@ -32,7 +32,7 @@ data class User(
 fun User.toResponse(): UserResponse {
     return UserResponse(
         id = id!!,
-        loginId = logInId,
+        loginId = loginId,
         name = name,
         hp = hp,
     )
