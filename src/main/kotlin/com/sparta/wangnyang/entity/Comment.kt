@@ -5,7 +5,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "comment" , schema = "public")
-data class Comment(
+class Comment(
     @Column
     var text: String,
 
