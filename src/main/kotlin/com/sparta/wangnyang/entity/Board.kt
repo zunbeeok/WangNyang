@@ -17,9 +17,9 @@ import jakarta.persistence.Table
 
 @Entity
 @Table(name = "board" , schema = "public")
-data class Board(
-//  @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = [CascadeType.ALL], orphanRemoval = true)
-    @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL], orphanRemoval = true)
+class Board(
+  @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = [CascadeType.ALL], orphanRemoval = true)
+//    @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL], orphanRemoval = true)
     var comments: MutableList<Comment> = mutableListOf(),
 
     @Column(name = "title")
