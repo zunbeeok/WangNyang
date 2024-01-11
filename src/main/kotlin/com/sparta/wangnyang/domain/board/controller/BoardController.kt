@@ -5,20 +5,15 @@ import com.sparta.wangnyang.domain.board.dto.CreateBoardRequest
 import com.sparta.wangnyang.domain.board.dto.UpdateBoardRequest
 
 import com.sparta.wangnyang.domain.board.service.BoardService
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.core.userdetails.User
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
-
+import org.springframework.web.bind.annotation.*
 
 
 @RequestMapping("/board")
@@ -28,13 +23,29 @@ private val boardService: BoardService
 ) {
 //    @GetMapping()
 //    fun getBoardList(): ResponseEntity<List<BoardResponse>> {
-//        return ResponseEntity
-//            .status(HttpStatus.OK)
-//            .body(boardService.getAllBoardList())
+////        return ResponseEntity
+////            .status(HttpStatus.OK)
+////            .body(boardService.getAllBoardList())
 //    }
+//@GetMapping
+//fun readAllPaging(
+//    @RequestParam(value = "pageNo", defaultValue = "0", required = false) pageNo: Int,
+//    @RequestParam(value = "pageSize", defaultValue = "3", required = false) pageSize: Int,
+//    @RequestParam(value = "sortBy", defaultValue = "id", required = false) sortBy: String
+//): BoardResponse {
+//
+//    return boardService.searchAllPaging(pageNo, pageSize, sortBy)
+
+//}
+    @GetMapping("/{boardId}")
+    fun getBoard(@PathVariable boardId: Long): ResponseEntity<BoardResponse> {
+    return ResponseEntity
+        .status(HttpStatus.OK)
+        .body(boardService.getBoardById(boardId))
+}
 
     @GetMapping()
-    fun getBoardList(): ResponseEntity <List<BoardResponse>> {
+    fun getBoardList(): ResponseEntity<Page<BoardResponse>> {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(boardService.getAllBoardList())
@@ -45,14 +56,6 @@ private val boardService: BoardService
 //        return boardRepository.findAll(pageable)
 //
 //    }
-
-    @GetMapping("/{boardId}")
-    fun getBoard(@PathVariable boardId: Long): ResponseEntity<BoardResponse>
-    {return ResponseEntity
-        .status(HttpStatus.OK)
-        .body(boardService.getBoardById(boardId))
-
-    }
 
 
     @PostMapping
