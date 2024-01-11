@@ -4,8 +4,11 @@ import com.sparta.wangnyang.domain.comment.dto.CommentResponse
 import com.sparta.wangnyang.domain.comment.dto.CreateCommentRequest
 import com.sparta.wangnyang.domain.comment.dto.UpdateCommentRequest
 import com.sparta.wangnyang.domain.comment.service.CommentService
+
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.security.core.userdetails.User
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -41,17 +44,19 @@ class CommentController(
     // 상태코드 201랑 생성된 댓글 정보 응답함.
 
     @PutMapping("/{commentId}")
-    fun updateComment(@PathVariable commentId: Long,
+    fun updateComment(
+            @AuthenticationPrincipal user:User,
+            @PathVariable commentId: Long,
         @RequestBody updateCommentRequest: UpdateCommentRequest
     ): ResponseEntity<CommentResponse> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(commentService.updateComment(commentId, updateCommentRequest))
+            .body(commentService.updateComment(user.username,commentId, updateCommentRequest))
     }
 
     @DeleteMapping("/{commentId}")
-    fun deleteComment(@PathVariable commentId: Long): ResponseEntity<Unit> {
-        commentService.deleteComment(commentId)
+    fun deleteComment(@AuthenticationPrincipal user: User, @PathVariable commentId: Long): ResponseEntity<Unit> {
+        commentService.deleteComment(user.username, commentId)
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
             .build()

@@ -41,10 +41,12 @@ class CommentServiceImpl(
 
 
     @Transactional
-    override fun updateComment(commentId: Long, updateCommentRequest: UpdateCommentRequest): CommentResponse {
+    override fun updateComment(userId:String,  commentId: Long, updateCommentRequest: UpdateCommentRequest): CommentResponse {
         val foundComment = commentId.let {
             commentRepository.findByIdOrNull(it)
         } ?: throw Exception ("target comment is not found")
+
+        if(foundComment.userId != userId) throw Exception("작성자가 일치하지 않습니다.")
 
         foundComment.userId = updateCommentRequest.writer
         foundComment.text = updateCommentRequest.text
@@ -58,9 +60,11 @@ class CommentServiceImpl(
     // 저장된 댓글을 CommentResponse.fromEntity(result)를 통해 CommentResponse 객체로 변환하고 반환한다.
 
     @Transactional
-    override fun deleteComment(commentId: Long) {
+    override fun deleteComment(userId:String,  commentId: Long) {
         val foundComment = commentRepository.findByIdOrNull(commentId)
             ?: throw NoSuchElementException("target comment is not found")
+
+        if(foundComment.userId != userId) throw Exception("작성자가 일치하지 않습니다.")
         commentRepository.delete(foundComment)
     }
     // 특정 댓글을 삭제한다.

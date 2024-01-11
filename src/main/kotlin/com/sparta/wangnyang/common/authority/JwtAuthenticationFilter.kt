@@ -1,40 +1,45 @@
 package com.sparta.wangnyang.common.authority
 
+import com.sparta.wangnyang.domain.user.dto.MemberType
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletRequest
 import jakarta.servlet.ServletResponse
 import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
+import org.springframework.http.HttpHeaders
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.User
+import org.springframework.security.web.authentication.WebAuthenticationDetails
 import org.springframework.stereotype.Component
 import org.springframework.util.StringUtils
 import org.springframework.web.filter.GenericFilterBean
+import org.springframework.web.filter.OncePerRequestFilter
 
 @Component
 class JwtAuthenticationFilter (
         private val jwtTokenProvider: JwtTokenProvider
-):GenericFilterBean(){ //genericFilterBean
+):OncePerRequestFilter(){ //genericFilterBean
 
-    override fun doFilter(request: ServletRequest?, response: ServletResponse?, chain: FilterChain?) {
+    override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
+        val token = parseBearerToken(request)
+        val user = parseUserSpecification(token)
+        UsernamePasswordAuthenticationToken.authenticated(user,token,user.authorities)
+                .apply { details = WebAuthenticationDetails(request) }
+                .also { SecurityContextHolder.getContext().authentication = it }
 
-        val token = resolveToken(request as HttpServletRequest) // accessToken
-
-        if(token != null && jwtTokenProvider.validateToken(token)){
-            val authentication = jwtTokenProvider.getAuthentication(token)
-            SecurityContextHolder.getContext().authentication = authentication
-        }
-
-        chain?.doFilter(request,response)
+        filterChain.doFilter(request,response)
     }
 
-    private fun resolveToken(request:HttpServletRequest):String?{
-        val bearerToken = request.getHeader("Authorization")
+    private fun parseBearerToken(request: HttpServletRequest) = request.getHeader(HttpHeaders.AUTHORIZATION)
+            .takeIf { it?.startsWith("Bearer ", true) ?: false }?.substring(7)
 
-        return if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")){
-            bearerToken.substring(7)
-        }else{
-            null;
-        }
-    }
-
+    private fun parseUserSpecification(token: String?) = (
+            token?.takeIf { it.length >= 10 }
+                    ?.let { jwtTokenProvider.validateTokenAndGetSubject(it) }
+                    ?: "anonymous:anonymous"
+            ).split(":")
+            .let { User(it[0], "", listOf(SimpleGrantedAuthority(it[1]))) } // loginId : "MEMBER"
 
 }
