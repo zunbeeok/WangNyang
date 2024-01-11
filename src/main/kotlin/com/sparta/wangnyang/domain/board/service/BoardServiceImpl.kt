@@ -9,14 +9,12 @@ import com.sparta.wangnyang.entity.toResponse
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.awt.print.Pageable
 
 
 @Service
-class BoardServiceImpl (
-    private val boardRepository: BoardRepository
-): BoardService
-{
+class BoardServiceImpl(
+        private val boardRepository: BoardRepository
+) : BoardService {
 
     override fun getAllBoardList(): List<BoardResponse> {
         return boardRepository.findAll().map { it.toResponse() }
@@ -33,24 +31,24 @@ class BoardServiceImpl (
     override fun createBoard(request: CreateBoardRequest): BoardResponse {
 
         //
-            return boardRepository.save(
+        return boardRepository.save(
                 Board(
-                    title = request.title,
-                    mainText = request.mainText,
-                    userId = request.writer
+                        title = request.title,
+                        mainText = request.mainText,
+                        userId = request.writer
                 )
-            ).toResponse()
+        ).toResponse()
     }
 
 
     // 게시물 수정
     @Transactional
-    override fun updateBoard(userId:String, boardId: Long, request: UpdateBoardRequest): BoardResponse {
+    override fun updateBoard(userId: String, boardId: Long, request: UpdateBoardRequest): BoardResponse {
         val board = boardRepository.findByIdOrNull(boardId) ?: throw Exception("게시물이 존재하지 않습니다.")
-        val (title,mainText,writer) = request
+        val (title, mainText, writer) = request
 
         //본인 게시글이 아니면 에러를 발생시킨다.
-        if(userId != board.userId && writer != board.userId) throw Exception("해당 게시물의 작성자가 아닙니다.")
+        if (userId != board.userId && writer != board.userId) throw Exception("해당 게시물의 작성자가 아닙니다.")
 
         board.title = title
         board.mainText = mainText
@@ -65,7 +63,7 @@ class BoardServiceImpl (
     override fun deleteBoard(userId: String, boardId: Long) {
         val board = boardRepository.findByIdOrNull(boardId) ?: throw Exception("게시물이 존재하지 않습니다.")
 
-        if(board.userId != userId) throw Exception("해당 게시물의 작성자가 아닙니다.")
+        if (board.userId != userId) throw Exception("해당 게시물의 작성자가 아닙니다.")
 
         boardRepository.delete(board)
     }

@@ -39,7 +39,8 @@ class JwtAuthenticationFilter (
             token?.takeIf { it.length >= 10 }
                     ?.let { jwtTokenProvider.validateTokenAndGetSubject(it) }
                     ?: "anonymous:anonymous"
+            // loginId:"MEMBER"
             ).split(":")
-            .let { User(it[0], "", listOf(SimpleGrantedAuthority(it[1]))) } // loginId : "MEMBER"
-
+            //["logindId","MEMBER]
+            .let { User(it[0], "", listOf(SimpleGrantedAuthority(it[1]))) }
 }
