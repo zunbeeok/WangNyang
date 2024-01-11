@@ -10,6 +10,8 @@ data class CommentResponse(
     val text: String,
     val createdAt: LocalDateTime,
     var boardId: Board,
+    val parentId: Long?,
+    val subComments : MutableList<Comment>,
 ) {
     companion object {
         fun fromEntity(entity: Comment) = CommentResponse(
@@ -18,6 +20,8 @@ data class CommentResponse(
             text = entity.text,
             createdAt = entity.createdAt,
             boardId = entity.board,
+            parentId = entity.parent?.id,
+            subComments = entity.subComment
         )
-    } // 관심사의 분리. DTO랑 Entity는 서로 몰라야 하니까 변환로직은 DTO에 넣기.
+    }
 }
