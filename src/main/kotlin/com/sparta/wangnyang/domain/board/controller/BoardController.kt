@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/board")
 @RestController
 class BoardController(
-private val boardService: BoardService
+    private val boardService: BoardService
 ) {
 //    @GetMapping()
 //    fun getBoardList(): ResponseEntity<List<BoardResponse>> {
@@ -36,19 +36,19 @@ private val boardService: BoardService
 //
 //    return boardService.searchAllPaging(pageNo, pageSize, sortBy)
 
-//}
+    //}
     @GetMapping("/{boardId}")
     fun getBoard(@PathVariable boardId: Long): ResponseEntity<BoardResponse> {
-    return ResponseEntity
-        .status(HttpStatus.OK)
-        .body(boardService.getBoardById(boardId))
-}
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(boardService.getBoardById(boardId))
+    }
 
     @GetMapping()
     fun getBoardList(): ResponseEntity<Page<BoardResponse>> {
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(boardService.getAllBoardList())
+            .status(HttpStatus.OK)
+            .body(boardService.getAllBoardList())
     }
 
 //    @GetMapping
@@ -59,8 +59,10 @@ private val boardService: BoardService
 
 
     @PostMapping
-    fun createBoard(@AuthenticationPrincipal user:User,@RequestBody createBoardRequest: CreateBoardRequest): ResponseEntity<BoardResponse>
-    {
+    fun createBoard(
+        @AuthenticationPrincipal user: User,
+        @RequestBody createBoardRequest: CreateBoardRequest
+    ): ResponseEntity<BoardResponse> {
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(boardService.createBoard(createBoardRequest))
@@ -68,25 +70,26 @@ private val boardService: BoardService
 
     @PutMapping("/{boardId}")
     fun updateBoard(
-            @AuthenticationPrincipal user:User,
-            @PathVariable boardId: Long,
-                    @RequestBody updateBoardRequest: UpdateBoardRequest
+        @AuthenticationPrincipal user: User,
+        @PathVariable boardId: Long,
+        @RequestBody updateBoardRequest: UpdateBoardRequest
     )
-    : ResponseEntity<BoardResponse> {
+            : ResponseEntity<BoardResponse> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(boardService.updateBoard(user.username,boardId,updateBoardRequest))
+            .body(boardService.updateBoard(user.username, boardId, updateBoardRequest))
     }
 
     @DeleteMapping("/{boardId}")
     fun deleteBoard(
-            @AuthenticationPrincipal user:User,
-            @PathVariable boardId: Long):ResponseEntity<Unit>
-    {boardService.deleteBoard(user.username,boardId)
+        @AuthenticationPrincipal user: User,
+        @PathVariable boardId: Long
+    ): ResponseEntity<Unit> {
+        boardService.deleteBoard(user.username, boardId)
 
-    return ResponseEntity
-        .status(HttpStatus.NO_CONTENT)
-        .build()
+        return ResponseEntity
+            .status(HttpStatus.NO_CONTENT)
+            .build()
     }
 
 }

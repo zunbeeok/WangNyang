@@ -16,7 +16,7 @@ interface BoardService {
 
     fun createBoard(request: CreateBoardRequest): BoardResponse
 
-    fun updateBoard(userId:String,boardId: Long, request: UpdateBoardRequest): BoardResponse
+    fun updateBoard(userId: String, boardId: Long, request: UpdateBoardRequest): BoardResponse
 
     fun deleteBoard(userId: String, boardId: Long)
 

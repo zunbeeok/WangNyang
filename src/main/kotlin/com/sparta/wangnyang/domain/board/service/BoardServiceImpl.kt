@@ -15,12 +15,10 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 
-
 @Service
-class BoardServiceImpl (
+class BoardServiceImpl(
     private val boardRepository: BoardRepository
-): BoardService
-{
+) : BoardService {
 
 //    override fun getAllBoardList(): List<BoardResponse> {
 //        return boardRepository.findAll().map { it.toResponse() }
@@ -32,7 +30,7 @@ class BoardServiceImpl (
         val pageable: Pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "userId"))
         // Board 테이블의 데이터를 모두 조회. 이때 조회하면서 변수 pageable의 페이징 설정 of(인자들) 적용
 //        return boardRepository.findByIdOrderByIdDesc(pageable)
-        return boardRepository.findAllBy(pageable).map{
+        return boardRepository.findAllBy(pageable).map {
             it.toResponse()
         };
     }
@@ -44,30 +42,29 @@ class BoardServiceImpl (
     }
 
 
-
     // 게시물 생성
     @Transactional
     override fun createBoard(request: CreateBoardRequest): BoardResponse {
 
         //
-            return boardRepository.save(
-                Board(
-                    title = request.title,
-                    mainText = request.mainText,
-                    userId = request.writer
-                )
-            ).toResponse()
+        return boardRepository.save(
+            Board(
+                title = request.title,
+                mainText = request.mainText,
+                userId = request.writer
+            )
+        ).toResponse()
     }
 
 
     // 게시물 수정
     @Transactional
-    override fun updateBoard(userId:String, boardId: Long, request: UpdateBoardRequest): BoardResponse {
+    override fun updateBoard(userId: String, boardId: Long, request: UpdateBoardRequest): BoardResponse {
         val board = boardRepository.findByIdOrNull(boardId) ?: throw Exception("게시물이 존재하지 않습니다.")
-        val (title,mainText,writer) = request
+        val (title, mainText, writer) = request
 
         //본인 게시글이 아니면 에러를 발생시킨다.
-        if(userId != board.userId && writer != board.userId) throw Exception("해당 게시물의 작성자가 아닙니다.")
+        if (userId != board.userId && writer != board.userId) throw Exception("해당 게시물의 작성자가 아닙니다.")
 
         board.title = title
         board.mainText = mainText
@@ -82,7 +79,7 @@ class BoardServiceImpl (
     override fun deleteBoard(userId: String, boardId: Long) {
         val board = boardRepository.findByIdOrNull(boardId) ?: throw Exception("게시물이 존재하지 않습니다.")
 
-        if(board.userId != userId) throw Exception("해당 게시물의 작성자가 아닙니다.")
+        if (board.userId != userId) throw Exception("해당 게시물의 작성자가 아닙니다.")
 
         boardRepository.delete(board)
     }
