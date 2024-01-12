@@ -25,7 +25,7 @@ class CommentController(
 ) {
 
     @GetMapping
-    fun getComment(): ResponseEntity<List<CommentResponse>> {
+    fun getComment(@PathVariable boardId: Long): ResponseEntity<List<CommentResponse>> {
         return ResponseEntity
             .status(HttpStatus.OK).body(commentService.getComment())
     }
@@ -45,9 +45,10 @@ class CommentController(
 
     @PutMapping("/{commentId}")
     fun updateComment(
-            @AuthenticationPrincipal user:User,
-            @PathVariable commentId: Long,
-        @RequestBody updateCommentRequest: UpdateCommentRequest
+        @AuthenticationPrincipal user:User,
+        @PathVariable boardId: Long,
+        @PathVariable commentId: Long,
+        @RequestBody updateCommentRequest: UpdateCommentRequest,
     ): ResponseEntity<CommentResponse> {
         return ResponseEntity
             .status(HttpStatus.OK)
@@ -55,10 +56,55 @@ class CommentController(
     }
 
     @DeleteMapping("/{commentId}")
-    fun deleteComment(@AuthenticationPrincipal user: User, @PathVariable commentId: Long): ResponseEntity<Unit> {
+    fun deleteComment(@AuthenticationPrincipal user: User, @PathVariable boardId: Long, @PathVariable commentId: Long): ResponseEntity<Unit> {
         commentService.deleteComment(user.username, commentId)
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
             .build()
     }
+
+    @GetMapping("/{commentId}/subComment")
+    fun getSubComments(@PathVariable boardId: Long, @PathVariable commentId: Long): ResponseEntity<List<CommentResponse>> {
+        return ResponseEntity
+            .status(HttpStatus.OK).body(commentService.getSubComments(commentId))
+    }
+
+    @PostMapping("/{parentId}/subComment")
+    fun createSubComment(
+        @PathVariable boardId: Long,
+        @PathVariable parentId: Long,
+        @RequestBody createCommentRequest: CreateCommentRequest
+    ): ResponseEntity<CommentResponse> {
+        return ResponseEntity
+            .status(HttpStatus.CREATED)
+            .body(commentService.createSubComment(boardId, parentId, createCommentRequest))
+    }
+
+    @PutMapping("/{commentId}/subComment/{subCommentId}")
+    fun updateSubComment(
+        @AuthenticationPrincipal user: User,
+        @PathVariable boardId: String,
+        @PathVariable commentId: Long,
+        @PathVariable subCommentId: Long,
+        @RequestBody updateCommentRequest: UpdateCommentRequest,
+    ): ResponseEntity<CommentResponse> {
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(commentService.updateSubComment(user.username, subCommentId, updateCommentRequest))
+    }
+
+
+    //// 율님이 이거 수정해보시면 좋을 것 같아요!
+    @DeleteMapping("/{commentId}/subComment/{subCommentId}")
+    fun deleteSubComment(
+        @AuthenticationPrincipal user: User,
+        @PathVariable subCommentId: Long
+    ): ResponseEntity<Unit> {
+        commentService.deleteSubComment(user.username, subCommentId)
+        return ResponseEntity
+            .status(HttpStatus.NO_CONTENT)
+            .build()
+    }
+
+
 }
