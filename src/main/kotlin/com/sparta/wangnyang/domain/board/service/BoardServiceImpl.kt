@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class BoardServiceImpl(
     private val boardRepository: BoardRepository
+
 ) : BoardService {
 
 //    override fun getAllBoardList(): List<BoardResponse> {
@@ -48,11 +49,11 @@ class BoardServiceImpl(
 
         //
         return boardRepository.save(
-            Board(
-                title = request.title,
-                mainText = request.mainText,
-                userId = request.writer
-            )
+             Board(
+                 title = request.title,
+                 mainText = request.mainText,
+                 userId = request.writer
+                )
         ).toResponse()
     }
 

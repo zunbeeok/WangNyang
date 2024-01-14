@@ -51,9 +51,9 @@ class UserController(
 
 
     // 회원 정보 수정
-    @PutMapping("")
+    @PutMapping()
     fun updateUserInfo(
-            @AuthenticationPrincipal user:User,
+            @AuthenticationPrincipal user:User,//{username :loginId, paswword :"", :MEMBER}
         @RequestBody updateUserInfo: UpdateUserRequest
     ): ResponseEntity<UserResponse> {
         return ResponseEntity
@@ -61,7 +61,6 @@ class UserController(
             .body(userService.updateUserInfo(user.username, updateUserInfo))
     }
 
-//
     // 회원 탈퇴
     @DeleteMapping()
     fun deleteUserInfo(@AuthenticationPrincipal user:User): ResponseEntity<Unit> {

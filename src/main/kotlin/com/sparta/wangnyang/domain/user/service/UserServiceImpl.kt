@@ -29,7 +29,7 @@ class UserServiceImpl(
                     ?.takeIf { encoder.matches(loginRequest.pw,it.pw) }
                     ?: throw IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다.")
             val token = jwtTokenProvider.createToken("${user.loginId}:${MemberType.MEMBER}");
-        return LoginResponse(user.loginId,user.name,token);
+            return LoginResponse(user.loginId,user.name,token);
     }
 
 
