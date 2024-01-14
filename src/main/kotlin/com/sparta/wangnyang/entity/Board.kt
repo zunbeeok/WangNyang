@@ -14,12 +14,10 @@ import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
 
-
 @Entity
 @Table(name = "board" , schema = "public")
 class Board(
-  @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = [CascadeType.ALL], orphanRemoval = true)
-//    @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
     var comments: MutableList<Comment> = mutableListOf(),
 
     @Column(name = "title")
@@ -35,6 +33,15 @@ class Board(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? =null;
 
+
+    fun createComment (comment: Comment) {
+        comments.add(comment)
+    }
+
+    fun deleteComment (comment: Comment){
+        comments.remove(comment)
+    }
+
 }
 
 fun Board.toResponse(): BoardResponse {
@@ -44,6 +51,11 @@ fun Board.toResponse(): BoardResponse {
         mainText = mainText,
         writer = userId,
         createdAt = createdAt.toString(),
-        comments = comments
+        commentList = comments.map { it.toResponse() }
     )
+
+
 }
+
+
+
