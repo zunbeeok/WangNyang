@@ -9,6 +9,7 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
@@ -18,24 +19,25 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableWebSecurity
 class SecurityConfig(
         private val jwtAuthenticationFilter: JwtAuthenticationFilter
+        private val entryPoint: AuthenticationEntryPoint,
 ) {
 
     private val allowedUrls = arrayOf("/", "/user/signup", "/user/login")
     @Bean
     fun filterChain(http: HttpSecurity) : SecurityFilterChain{
-        http.httpBasic { it.disable() }
+        return http.httpBasic { it.disable() }
                 .csrf { it.disable() }
                 .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
-                .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter::class.java)
                 .authorizeHttpRequests {
-                    it.requestMatchers(*allowedUrls).permitAll()
-                            .requestMatchers("/user/login","/user/signup").permitAll()
+                                    it.requestMatchers("user/login").permitAll()
+                                            .requestMatchers("/user/signup").permitAll()
+                                            .requestMatchers("/").permitAll()
+                                            .requestMatchers("/swagger-ui/**").permitAll()
                             .anyRequest().authenticated()
-//                            .anyRequest().authenticated()
                 }
-
-
-        return http.build();
+                .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter::class.java)
+                .exceptionHandling { it.authenticationEntryPoint(entryPoint) }
+                .build();
     }
 
     @Bean

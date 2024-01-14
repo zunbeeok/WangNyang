@@ -18,6 +18,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import java.sql.Timestamp
 import java.time.Instant
 import java.time.LocalDateTime
@@ -29,7 +30,7 @@ import javax.crypto.spec.SecretKeySpec
 
 const val EXPIRATION_MILLISECONDS: Long = 1000 * 60 * 30
 
-@Component
+@Service
 class JwtTokenProvider (
         @Value("\${secret-key}")
         private var secretKey:String,

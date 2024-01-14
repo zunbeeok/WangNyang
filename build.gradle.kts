@@ -6,6 +6,9 @@ plugins {
     kotlin("jvm") version "1.9.21"
     kotlin("plugin.spring") version "1.9.21"
     kotlin("plugin.jpa") version "1.9.21"
+    kotlin("plugin.serialization") version "1.9.21"
+
+    id("io.ktor.plugin") version "2.3.4"
 }
 
 noArg {
@@ -45,6 +48,13 @@ dependencies {
 
     runtimeOnly("org.postgresql:postgresql")
 
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+    implementation("io.github.jan-tennert.supabase:storage-kt:2.0.4")
+
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+
+    implementation("io.ktor:ktor-server-netty")
 
 }
 

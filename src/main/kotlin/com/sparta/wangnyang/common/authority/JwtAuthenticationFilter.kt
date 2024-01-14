@@ -23,11 +23,15 @@ class JwtAuthenticationFilter (
 ):OncePerRequestFilter(){ //genericFilterBean
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
-        val token = parseBearerToken(request)
-        val user = parseUserSpecification(token)
-        UsernamePasswordAuthenticationToken.authenticated(user,token,user.authorities)
-                .apply { details = WebAuthenticationDetails(request) }
-                .also { SecurityContextHolder.getContext().authentication = it }
+        try {
+            val token = parseBearerToken(request)
+            val user = parseUserSpecification(token)
+            UsernamePasswordAuthenticationToken.authenticated(user, token, user.authorities)
+                    .apply { details = WebAuthenticationDetails(request) }
+                    .also { SecurityContextHolder.getContext().authentication = it }
+        }catch (e:Exception){
+            request.setAttribute("exception",e)
+        }
 
         filterChain.doFilter(request,response)
     }
@@ -35,12 +39,14 @@ class JwtAuthenticationFilter (
     private fun parseBearerToken(request: HttpServletRequest) = request.getHeader(HttpHeaders.AUTHORIZATION)
             .takeIf { it?.startsWith("Bearer ", true) ?: false }?.substring(7)
 
-    private fun parseUserSpecification(token: String?) = (
-            token?.takeIf { it.length >= 10 }
+    private fun parseUserSpecification(token: String?):User {
+            return (token?.takeIf { it.length >= 10 }
                     ?.let { jwtTokenProvider.validateTokenAndGetSubject(it) }
-                    ?: "anonymous:anonymous"
+                    ?:"anonymous:anonymous"
+//                    ?: throw Exception("에러 확인.")//상위 클래스로 넘겨주고 거기서 에러컨트롤 /인증, 권한을 체크 authentication 타입에러로 던져 주기.
             // loginId:"MEMBER"
             ).split(":")
             //["logindId","MEMBER]
             .let { User(it[0], "", listOf(SimpleGrantedAuthority(it[1]))) }
+    }
 }
