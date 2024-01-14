@@ -4,7 +4,10 @@ import com.sparta.wangnyang.domain.board.dto.BoardResponse
 import com.sparta.wangnyang.domain.board.dto.CreateBoardRequest
 import com.sparta.wangnyang.domain.board.dto.UpdateBoardRequest
 import com.sparta.wangnyang.domain.board.repository.BoardRepository
+import com.sparta.wangnyang.domain.comment.dto.CommentResponse
+import com.sparta.wangnyang.domain.comment.dto.CreateCommentRequest
 import com.sparta.wangnyang.entity.Board
+import com.sparta.wangnyang.entity.Comment
 import com.sparta.wangnyang.entity.toResponse
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -58,6 +61,7 @@ class BoardServiceImpl(
     }
 
 
+
     // 게시뭏 삭제
     @Transactional
     override fun deleteBoard(userId: String, boardId: Long) {
@@ -67,6 +71,42 @@ class BoardServiceImpl(
 
         boardRepository.delete(board)
     }
+
+
+    // 댓글 추가
+    @Transactional
+    override fun createComment(boardId: Long, request: CreateCommentRequest): CommentResponse{
+        val board = boardRepository.findByIdOrNull(boardId) ?: throw Exception("댓글을 찾을 수 없습니다.")
+
+        val (boardId, writer, text) = request
+
+
+//        val boardId: Long,
+//        val writer: String,
+//        val text: String,
+
+        val comment = Comment(
+            userId = request.writer,
+            text = request.text,
+            board = board
+        )
+
+        board.createComment(comment)
+        boardRepository.save(board)
+        return comment.toResponse()
+    }
+
+    //댓글 삭제
+    @Transactional
+    override fun deleteComment(parentId: Long) {
+        val comment = boardRepository.findByIdOrNull(parentId) ?: throw Exception("댓글을 찾을 수 없습니다.")
+
+        boardRepository.delete(comment)
+    }
+
+
+
+
 
 }
 

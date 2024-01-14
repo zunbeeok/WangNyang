@@ -1,27 +1,21 @@
 package com.sparta.wangnyang.domain.comment.service
 
-import com.sparta.wangnyang.domain.comment.dto.CommentResponse
-import com.sparta.wangnyang.domain.comment.dto.CreateCommentRequest
-import com.sparta.wangnyang.domain.comment.dto.UpdateCommentRequest
-import com.sparta.wangnyang.entity.Comment
-import org.springframework.data.domain.Page
+import com.sparta.wangnyang.domain.comment.dto.*
 
 interface CommentService {
 //    fun getComment(): List<CommentResponse>
 
-    fun getComment(): Page<Comment>
+//    fun createComment(boardId: Long, createCommentRequest: CreateCommentRequest): CommentResponse
 
-    fun createComment(boardId: Long, createCommentRequest: CreateCommentRequest): CommentResponse
+//    fun updateComment(userId:String, boardId: Long, updateCommentRequest: UpdateCommentRequest): CommentResponse
 
-    fun updateComment(userId:String, boardId: Long, updateCommentRequest: UpdateCommentRequest): CommentResponse
+//    fun deleteComment(userId:String, commentId: Long, parentId: Long)
 
-    fun deleteComment(userId:String, commentId: Long)
+    fun getSubComment(parentId: Long): CommentResponse
 
-    fun getSubComments(commentId: Long): List<CommentResponse>
+    fun createSubComment(parentId: Long, createSubCommentRequest: CreateSubCommentRequest): SubCommentResponse
 
-    fun createSubComment(boardId: Long, parentId: Long, createCommentRequest: CreateCommentRequest): CommentResponse
+    fun updateSubComment(parentId: Long, subCommentId: Long, updateSubCommentRequest: UpdateSubCommentRequest): CommentResponse
 
-    fun updateSubComment(userId: String, commentId: Long, updateCommentRequest: UpdateCommentRequest): CommentResponse
-
-    fun deleteSubComment(userId: String, commentId: Long)
+    fun deleteSubComment(parentId: Long, subCommentId: Long)
 }
