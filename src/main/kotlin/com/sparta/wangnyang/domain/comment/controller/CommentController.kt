@@ -1,8 +1,6 @@
 package com.sparta.wangnyang.domain.comment.controller
 
-import com.sparta.wangnyang.domain.comment.dto.CommentResponse
-import com.sparta.wangnyang.domain.comment.dto.CreateCommentRequest
-import com.sparta.wangnyang.domain.comment.dto.UpdateCommentRequest
+import com.sparta.wangnyang.domain.comment.dto.*
 import com.sparta.wangnyang.domain.comment.service.CommentService
 
 import org.springframework.http.HttpStatus
@@ -24,41 +22,49 @@ class CommentController(
     private val commentService: CommentService
 ) {
 
-    @GetMapping
-    fun getComment(): ResponseEntity<List<CommentResponse>> {
+    @GetMapping("/{parentId}/subComment")
+    fun getSubComments(@PathVariable boardId: Long, @PathVariable parentId: Long): ResponseEntity<CommentResponse> {
         return ResponseEntity
-            .status(HttpStatus.OK).body(commentService.getComment())
+            .status(HttpStatus.OK).body(commentService.getSubComment(parentId))
     }
 
-    // GET 이라는 HTTP 메서드 사용해서, 특정 게시물의 모든 댓글을 조회함
-    // HTTP 상태코드 200(OK)랑 조회한 댓글 목록을 응답한다.
-
-    @PostMapping
-    fun createComment(@PathVariable boardId: Long, @RequestBody createCommentRequest: CreateCommentRequest): ResponseEntity<CommentResponse>{
+    @PostMapping("/{parentId}/subComment")
+    fun createSubComment(
+        @PathVariable boardId: Long,
+        @PathVariable parentId: Long,
+        @RequestBody createSubCommentRequest: CreateSubCommentRequest
+    ): ResponseEntity<SubCommentResponse> {
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(commentService.createComment(boardId, createCommentRequest))
+            .body(commentService.createSubComment(parentId, createSubCommentRequest))
     }
-    // POST를 사용해서 특정 게시물에 새로운 댓글을 생성함.
-    // CreateCommentRequest를 통해서 전달된 정보로 댓글 생성함.
-    // 상태코드 201랑 생성된 댓글 정보 응답함.
 
-    @PutMapping("/{commentId}")
-    fun updateComment(
-            @AuthenticationPrincipal user:User,
-            @PathVariable commentId: Long,
-        @RequestBody updateCommentRequest: UpdateCommentRequest
+    @PutMapping("/{parentId}/subComment/{subCommentId}")
+    fun updateSubComment(
+        @AuthenticationPrincipal user: User,
+        @PathVariable boardId: Long,
+        @PathVariable parentId: Long,
+        @PathVariable subCommentId: Long,
+        @RequestBody updateSubCommentRequest: UpdateSubCommentRequest,
     ): ResponseEntity<CommentResponse> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(commentService.updateComment(user.username,commentId, updateCommentRequest))
+            .body(commentService.updateSubComment(parentId, subCommentId, updateSubCommentRequest))
     }
 
-    @DeleteMapping("/{commentId}")
-    fun deleteComment(@AuthenticationPrincipal user: User, @PathVariable commentId: Long): ResponseEntity<Unit> {
-        commentService.deleteComment(user.username, commentId)
+
+    @DeleteMapping("/{parentId}/subComment/{subCommentId}")
+    fun deleteSubComment(
+        @AuthenticationPrincipal user: User,
+        @PathVariable boardId: Long,
+        @PathVariable parentId: Long,
+        @PathVariable subCommentId: Long,
+    ): ResponseEntity<Unit> {
+        commentService.deleteSubComment(parentId, subCommentId)
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
             .build()
     }
+
+
 }
