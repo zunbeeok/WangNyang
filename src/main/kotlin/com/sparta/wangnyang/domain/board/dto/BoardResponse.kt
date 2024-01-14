@@ -1,5 +1,6 @@
 package com.sparta.wangnyang.domain.board.dto
 
+import com.sparta.wangnyang.entity.Board
 import com.sparta.wangnyang.entity.Comment
 
 data class BoardResponse(
@@ -9,4 +10,4 @@ data class BoardResponse(
     val writer : String,
     val createdAt : String,
     val comments : MutableList<Comment>,
-)
+) {}
