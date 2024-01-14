@@ -9,6 +9,10 @@ import com.sparta.wangnyang.domain.comment.dto.CreateCommentRequest
 import com.sparta.wangnyang.entity.Board
 import com.sparta.wangnyang.entity.Comment
 import com.sparta.wangnyang.entity.toResponse
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -16,11 +20,23 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class BoardServiceImpl(
-        private val boardRepository: BoardRepository
+    private val boardRepository: BoardRepository
+
 ) : BoardService {
 
-    override fun getAllBoardList(): List<BoardResponse> {
-        return boardRepository.findAll().map { it.toResponse() }
+//    override fun getAllBoardList(): List<BoardResponse> {
+//        return boardRepository.findAll().map { it.toResponse() }
+//    }
+
+    override fun getAllBoardList(): Page<BoardResponse> {
+        // 단일 페이지 1번 페이지의 데이터 개수를 10개로 제한, 최신 등록한 게시글이 먼저 오도록 아이디별로 내림차순
+
+        val pageable: Pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "userId"))
+        // Board 테이블의 데이터를 모두 조회. 이때 조회하면서 변수 pageable의 페이징 설정 of(인자들) 적용
+//        return boardRepository.findByIdOrderByIdDesc(pageable)
+        return boardRepository.findAllBy(pageable).map {
+            it.toResponse()
+        };
     }
 
 
@@ -29,16 +45,17 @@ class BoardServiceImpl(
         return board.toResponse()
     }
 
+
     // 게시물 생성
     @Transactional
     override fun createBoard(request: CreateBoardRequest): BoardResponse {
 
         //
         return boardRepository.save(
-                Board(
-                        title = request.title,
-                        mainText = request.mainText,
-                        userId = request.writer
+             Board(
+                 title = request.title,
+                 mainText = request.mainText,
+                 userId = request.writer
                 )
         ).toResponse()
     }
