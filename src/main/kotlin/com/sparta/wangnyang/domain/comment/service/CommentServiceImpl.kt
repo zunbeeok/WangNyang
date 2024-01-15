@@ -12,6 +12,7 @@ import io.jsonwebtoken.security.SignatureException
 import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service // 이 클래스는 Spring에서 서비스 역할을 한다고 붙여주는 어노테이션
 class CommentServiceImpl(
@@ -85,6 +86,13 @@ class CommentServiceImpl(
     }
 
 
+    override fun getSubComment(parentId: Long, subCommentId: Long): SubCommentResponse {
+        val subComment = subCommentRepository.findByIdOrNull(subCommentId) ?: throw NoSuchElementException("대댓글을 찾을 수 없습니다.")
+
+        return subComment.toResponse()
+    }
+
+
     @Transactional
     override fun createSubComment(
             userId:String,
@@ -115,17 +123,22 @@ class CommentServiceImpl(
         parentId: Long,
         subCommentId: Long,
         request: UpdateSubCommentRequest
-    ): CommentResponse {
+    ): SubCommentResponse {
+        if(userId == "anonymous") throw SignatureException("로그인을 해주세요.")
 
 /// !!!!!!!!!!!!!!!!!!!!!!유저 권한은 다시 붙여주세요 준홍님!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 //        val userId = request.writer
     val comment = commentRepository.findByIdOrNull(parentId) ?: throw Exception("원 댓글을 찾을 수 없습니다.")
-    val subComment = commentRepository.findByIdOrNull(subCommentId) ?: throw Exception("원 댓글을 찾을 수 없습니다.")
+    val subComment = subCommentRepository.findByIdOrNull(subCommentId) ?: throw Exception("원 댓글을 찾을 수 없습니다.")
+
+
+        if (subComment.userId != userId) throw Exception("작성자가 일치하지 않습니다.")
 
         subComment.text = request.text
 
-        return commentRepository.save(comment).toResponse()
+        commentRepository.save(comment)
+        return subComment.toResponse()
 
     }
 

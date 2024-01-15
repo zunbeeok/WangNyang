@@ -12,13 +12,3 @@ data class CommentResponse(
     val subCommentList: List<SubCommentResponse>,
 )
 
-//    companion object {
-//        fun fromEntity(entity: Comment) = CommentResponse(
-//            id = entity.id!!,
-//            userId = entity.userId,
-//            text = entity.text,
-//            createdAt = entity.createdAt,
-//            boardId = entity.board,
-//            subCommentList = List<SubCommentResponse>
-//        )
-//    }

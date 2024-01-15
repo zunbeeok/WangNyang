@@ -6,6 +6,7 @@ import com.sparta.wangnyang.domain.comment.service.CommentService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.security.core.parameters.P
 import org.springframework.security.core.userdetails.User
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -92,7 +93,7 @@ class CommentController(
         @PathVariable parentId: Long,
         @PathVariable subCommentId: Long,
         @RequestBody updateSubCommentRequest: UpdateSubCommentRequest,
-    ): ResponseEntity<CommentResponse> {
+    ): ResponseEntity<SubCommentResponse> {
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(commentService.updateSubComment(user.username,parentId, subCommentId, updateSubCommentRequest))

@@ -3,19 +3,24 @@ package com.sparta.wangnyang.domain.comment.service
 import com.sparta.wangnyang.domain.comment.dto.*
 
 interface CommentService {
-//    fun getComment(): List<CommentResponse>
 
-//    fun createComment(boardId: Long, createCommentRequest: CreateCommentRequest): CommentResponse
+//    fun getComments(boardId: Long): List<CommentResponse>
+//
+    fun getComment(parentId: Long): CommentResponse
 
-//    fun updateComment(userId:String, boardId: Long, updateCommentRequest: UpdateCommentRequest): CommentResponse
+    fun createComment(userId:String, boardId: Long, request: CreateCommentRequest): CommentResponse
 
-//    fun deleteComment(userId:String, commentId: Long, parentId: Long)
+    fun updateComment(userId:String, parentId: Long, request: UpdateCommentRequest): CommentResponse
 
-    fun getSubComment(parentId: Long): CommentResponse
+    fun deleteComment(userId:String, boardId: Long, parentId: Long)
 
-    fun createSubComment(parentId: Long, createSubCommentRequest: CreateSubCommentRequest): SubCommentResponse
+    fun getSubComments(parentId: Long): CommentResponse
 
-    fun updateSubComment(parentId: Long, subCommentId: Long, updateSubCommentRequest: UpdateSubCommentRequest): CommentResponse
+    fun getSubComment(parentId: Long, subCommentId: Long): SubCommentResponse
+
+    fun createSubComment(userId:String, parentId: Long, request: CreateSubCommentRequest): SubCommentResponse
+
+    fun updateSubComment(userId:String, parentId: Long, subCommentId: Long, request: UpdateSubCommentRequest): SubCommentResponse
 
     fun deleteSubComment(userId:String, parentId: Long, subCommentId: Long)
 }

@@ -1,5 +1,6 @@
 package com.sparta.wangnyang.domain.board.service
 
+import com.sparta.wangnyang.domain.board.dto.BoardListResponse
 import com.sparta.wangnyang.domain.board.dto.BoardResponse
 import com.sparta.wangnyang.domain.board.dto.CreateBoardRequest
 import com.sparta.wangnyang.domain.board.dto.UpdateBoardRequest
@@ -9,7 +10,7 @@ import com.sparta.wangnyang.domain.comment.dto.CreateCommentRequest
 
 interface BoardService {
   
-    fun getAllBoardList(): Page<BoardResponse>
+    fun getAllBoardList(): Page<BoardListResponse>
 
     fun getBoardById(boardId: Long): BoardResponse
 

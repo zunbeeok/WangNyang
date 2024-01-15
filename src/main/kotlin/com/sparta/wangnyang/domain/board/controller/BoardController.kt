@@ -22,22 +22,7 @@ import org.springframework.web.bind.annotation.*
 class BoardController(
     private val boardService: BoardService
 ) {
-//    @GetMapping()
-//    fun getBoardList(): ResponseEntity<List<BoardResponse>> {
-////        return ResponseEntity
-////            .status(HttpStatus.OK)
-////            .body(boardService.getAllBoardList())
-//    }
-//@GetMapping
-//fun readAllPaging(
-//    @RequestParam(value = "pageNo", defaultValue = "0", required = false) pageNo: Int,
-//    @RequestParam(value = "pageSize", defaultValue = "3", required = false) pageSize: Int,
-//    @RequestParam(value = "sortBy", defaultValue = "id", required = false) sortBy: String
-//): BoardResponse {
-//
-//    return boardService.searchAllPaging(pageNo, pageSize, sortBy)
 
-    //}
     @GetMapping("/{boardId}")
     fun getBoard(@PathVariable boardId: Long): ResponseEntity<BoardResponse> {
         return ResponseEntity
@@ -51,13 +36,6 @@ class BoardController(
             .status(HttpStatus.OK)
             .body(boardService.getAllBoardList())
     }
-
-//    @GetMapping
-//    fun getBoardList(pageable: Pageable): Page<Board>{
-//        return boardRepository.findAll(pageable)
-//
-//    }
-
 
     @PostMapping
     fun createBoard(

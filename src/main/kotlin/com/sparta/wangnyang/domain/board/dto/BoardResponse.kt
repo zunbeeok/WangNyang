@@ -10,6 +10,6 @@ data class BoardResponse(
     val mainText : String,
     val writer : String,
     val createdAt : String,
-    val comments : MutableList<Comment>,
-) {}
+    val comments : List<CommentResponse>,
+)
 

@@ -20,13 +20,13 @@ class Board(
         @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)//여기부분이 board가 맞나요?
     var comments: MutableList<Comment> = mutableListOf(),
 
-    @Column(name = "title")
+        @Column(name = "title")
     var title : String,
 
-    @Column(name = "mainText")
+        @Column(name = "mainText")
     var mainText:String,
 
-    @Column(name = "user_id")
+        @Column(name = "user_id")
     var userId:String
 
 ):BaseTimeEntity(){
@@ -51,7 +51,7 @@ fun Board.toResponse(): BoardResponse {
         mainText = mainText,
         writer = userId,
         createdAt = createdAt.toString(),
-        commentList = comments.map { it.toResponse() }
+        comments = comments.map { it.toResponse() }
     )
 
 

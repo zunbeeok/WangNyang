@@ -1,5 +1,6 @@
 package com.sparta.wangnyang.domain.board.service
 
+import com.sparta.wangnyang.domain.board.dto.BoardListResponse
 import com.sparta.wangnyang.domain.board.dto.BoardResponse
 import com.sparta.wangnyang.domain.board.dto.CreateBoardRequest
 import com.sparta.wangnyang.domain.board.dto.UpdateBoardRequest
@@ -30,10 +31,10 @@ class BoardServiceImpl(
 //        return boardRepository.findAll().map { it.toResponse() }
 //    }
 
-    override fun getAllBoardList(): Page<BoardResponse> {
-        // 단일 페이지 1번 페이지의 데이터 개수를 10개로 제한, 최신 등록한 게시글이 먼저 오도록 아이디별로 내림차순
+    override fun getAllBoardList(): Page<BoardListResponse> {
+        // 단일 페이지 1번 페이지의 데이터 개수를 5개로 제한, 최신 등록한 게시글이 먼저 오도록 아이디별로 내림차순
 
-        val pageable: Pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "userId"))
+        val pageable: Pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "id"))
         // Board 테이블의 데이터를 모두 조회. 이때 조회하면서 변수 pageable의 페이징 설정 of(인자들) 적용
 //        return boardRepository.findByIdOrderByIdDesc(pageable)
         return boardRepository.findAllByOrderByCreatedAtDesc(pageable).map {
@@ -44,6 +45,7 @@ class BoardServiceImpl(
 
     override fun getBoardById(boardId: Long): BoardResponse {
         val board = boardRepository.findByIdOrNull(boardId) ?: throw Exception("게시물이 존재하지 않습니다.")
+
         return board.toResponse()
     }
 
@@ -95,39 +97,6 @@ class BoardServiceImpl(
 
         boardRepository.delete(board)
     }
-
-
-    // 댓글 추가
-    @Transactional
-    override fun createComment(boardId: Long, request: CreateCommentRequest): CommentResponse{
-        val board = boardRepository.findByIdOrNull(boardId) ?: throw Exception("댓글을 찾을 수 없습니다.")
-
-        val (boardId, writer, text) = request
-
-
-//        val boardId: Long,
-//        val writer: String,
-//        val text: String,
-
-        val comment = Comment(
-            userId = request.writer,
-            text = request.text,
-            board = board
-        )
-
-        board.createComment(comment)
-        boardRepository.save(board)
-        return comment.toResponse()
-    }
-
-    //댓글 삭제
-    @Transactional
-    override fun deleteComment(parentId: Long) {
-        val comment = boardRepository.findByIdOrNull(parentId) ?: throw Exception("댓글을 찾을 수 없습니다.")
-
-        boardRepository.delete(comment)
-    }
-
 
 
 
