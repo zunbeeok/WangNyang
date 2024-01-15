@@ -41,4 +41,8 @@ class ExceptionHandler {
     fun handleExpiredJwtException() =
             ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BaseResponse(ResultCode.ERROR.name,"토큰이 만료되었습니다. 다시 로그인해주세요.",ResultCode.ERROR.message))
 
+//    @ExceptionHandler(SignatureException::class)
+//    fun handleLoginException() =
+//            ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BaseResponse(ResultCode.ERROR.name,"로그인이 필요합니다.", ResultCode.ERROR.message))
+
 }

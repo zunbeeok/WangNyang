@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-        private val jwtAuthenticationFilter: JwtAuthenticationFilter
+        private val jwtAuthenticationFilter: JwtAuthenticationFilter,
         private val entryPoint: AuthenticationEntryPoint,
 ) {
 
