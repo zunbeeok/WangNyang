@@ -18,13 +18,15 @@ class Comment(
     val board: Board,
 
 //
-    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
-    val subcomments: MutableList<SubComment> = mutableListOf(),
 
     ):BaseTimeEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null;
+
+    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
+    val subcomments: MutableList<SubComment> = mutableListOf()
+
 
     fun createSubComment(subComment: SubComment) {
         subcomments.add(subComment)
@@ -41,7 +43,7 @@ fun Comment.toResponse(): CommentResponse {
         userId = userId,
         text = text,
         createdAt = createdAt,
-        boardId = board,
+//        boardId = board,
         subCommentList = subcomments.map { it.toResponse() }
     )
 

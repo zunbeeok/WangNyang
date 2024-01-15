@@ -1,5 +1,6 @@
 package com.sparta.wangnyang.domain.board.controller
 
+import com.sparta.wangnyang.domain.board.dto.BoardListResponse
 import com.sparta.wangnyang.domain.board.dto.BoardResponse
 import com.sparta.wangnyang.domain.board.dto.CreateBoardRequest
 import com.sparta.wangnyang.domain.board.dto.UpdateBoardRequest
@@ -45,7 +46,7 @@ class BoardController(
     }
 
     @GetMapping()
-    fun getBoardList(): ResponseEntity<Page<BoardResponse>> {
+    fun getBoardList(): ResponseEntity<Page<BoardListResponse>> {
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(boardService.getAllBoardList())
@@ -65,7 +66,7 @@ class BoardController(
     ): ResponseEntity<BoardResponse> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(boardService.createBoard(createBoardRequest))
+            .body(boardService.createBoard(user.username,createBoardRequest))
     }
 
     @PutMapping("/{boardId}")
@@ -75,9 +76,10 @@ class BoardController(
         @RequestBody updateBoardRequest: UpdateBoardRequest
     )
             : ResponseEntity<BoardResponse> {
-        return ResponseEntity
-            .status(HttpStatus.OK)
-            .body(boardService.updateBoard(user.username, boardId, updateBoardRequest))
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(boardService.updateBoard(user.username, boardId, updateBoardRequest))
+
     }
 
     @DeleteMapping("/{boardId}")

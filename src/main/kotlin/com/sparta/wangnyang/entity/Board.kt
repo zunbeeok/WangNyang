@@ -17,7 +17,7 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "board" , schema = "public")
 class Board(
-    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
+        @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)//여기부분이 board가 맞나요?
     var comments: MutableList<Comment> = mutableListOf(),
 
     @Column(name = "title")

@@ -17,5 +17,5 @@ interface CommentService {
 
     fun updateSubComment(parentId: Long, subCommentId: Long, updateSubCommentRequest: UpdateSubCommentRequest): CommentResponse
 
-    fun deleteSubComment(parentId: Long, subCommentId: Long)
+    fun deleteSubComment(userId:String, parentId: Long, subCommentId: Long)
 }

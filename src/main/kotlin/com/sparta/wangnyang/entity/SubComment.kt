@@ -11,12 +11,12 @@ class SubComment(
     @Column(name = "user_id")
     var userId: String,
 
-    @Column(name = "content")
+    @Column(name = "text")
     var text: String,
 
 
-    @Column(name = "parent_id")
-    var parentId: Long,
+//    @Column(name = "parent_id")
+//    var parentId: Long,
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,9 +32,8 @@ class SubComment(
 
 fun SubComment.toResponse(): SubCommentResponse {
     return SubCommentResponse(
-        id = id!!,
-        parentId = parentId,
-//        userId = userId,
+            id=id!!,
+        userId = userId,
         text = text
     )
 }

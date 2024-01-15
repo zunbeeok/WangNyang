@@ -8,7 +8,7 @@ data class CommentResponse(
     val userId: String,
     val text: String,
     val createdAt: LocalDateTime,
-    var boardId: Board,
+//    var boardId: Board,
     val subCommentList: List<SubCommentResponse>,
 )
 

@@ -5,6 +5,5 @@ import javax.xml.crypto.Data
 data class UpdateBoardRequest(
     val title : String,
     val mainText : String,
-    val writer : String,
-        val image: Data
+//    val image: Data
 )
